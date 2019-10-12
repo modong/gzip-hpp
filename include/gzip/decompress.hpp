@@ -22,7 +22,7 @@ class Decompressor
 
     template <typename OutputType>
     void decompress(OutputType& output,
-                    const char* data,
+                    char* data,
                     std::size_t size) const
     {
         z_stream inflate_s;
@@ -50,7 +50,7 @@ class Decompressor
             throw std::runtime_error("inflate init failed");
         }
 #pragma GCC diagnostic pop
-        inflate_s.next_in = reinterpret_cast<z_const Bytef*>(data);
+        inflate_s.next_in = reinterpret_cast<Bytef*>(data);
 
 #ifdef DEBUG
         // Verify if size (long type) input will fit into unsigned int, type used for zlib's avail_in
@@ -94,7 +94,7 @@ class Decompressor
     }
 };
 
-inline std::string decompress(const char* data, std::size_t size)
+inline std::string decompress(char* data, std::size_t size)
 {
     Decompressor decomp;
     std::string output;
